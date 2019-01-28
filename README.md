@@ -11,5 +11,4 @@ I need to make sure the color ramp looks okay, and I wish the code to become mor
 
 ![](https://raw.githubusercontent.com/tpaschalis/go-tinykaboom/master/out.png)
 
-TODO : Modify lerpColor to have ramp up of colors correctly (now its one or the other)
 

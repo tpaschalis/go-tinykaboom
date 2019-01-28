@@ -61,7 +61,7 @@ func multiplyColorIntensity(c color.RGBA, f float64) color.RGBA {
 }
 
 const sphereRadius = 1.5
-const noiseAmplitude = 1.
+const noiseAmplitude = 1.0
 
 func hash(n float64) float64 {
 	x := math.Sin(n) * 43758.5453
@@ -73,10 +73,10 @@ func lerp(v0, v1, t float64) float64 {
 }
 
 func lerpColor(v0, v1 color.RGBA, t float64) color.RGBA {
-	return color.RGBA{v0.R + (v1.R-v0.R)*uint8(max(0., min(1., t))),
-		v0.G + (v1.G-v0.G)*uint8(max(0., min(1., t))),
-		v0.B + (v1.B-v0.B)*uint8(max(0., min(1., t))),
-		255}
+    p1 := float64(v0.R)/255. + float64(v1.R-v0.R)/255.*(max(0., min(1., t)))
+    p2 := float64(v0.G)/255. + float64(v1.G-v0.G)/255.*(max(0., min(1., t)))
+    p3 := float64(v0.B)/255. + float64(v1.B-v0.B)/255.*(max(0., min(1., t)))
+	return color.RGBA{uint8(p1*255.), uint8(p2*255.), uint8(p3*255.), 255}
 }
 
 func noise(x r3.Vector) float64 {
@@ -127,18 +127,18 @@ func paletteFire(d float64) color.RGBA {
 	yellow := color.RGBA{uint8(255), uint8(250), uint8(0), uint8(255)} // "note that the color is "hot", i.e. has components >255"
 	orange := color.RGBA{uint8(255), uint8(150), uint8(0), uint8(255)}
 	red := color.RGBA{uint8(255), uint8(0), uint8(0), uint8(255)}
-	darkGray := color.RGBA{uint8(50), uint8(50), uint8(50), uint8(255)}
-	gray := color.RGBA{uint8(100), uint8(100), uint8(100), uint8(255)}
+	darkGray := color.RGBA{uint8(0), uint8(0), uint8(0), uint8(255)}
+	gray := color.RGBA{uint8(0), uint8(0), uint8(0), uint8(230)}
 
 	x := max(0., min(1., d))
 	if x < 0.25 {
 		return lerpColor(gray, darkGray, x*4.0)
 	} else if x < 0.5 {
-		return lerpColor(darkGray, red, x*4.0-1.0)
+		return lerpColor(darkGray, red, x*4.0 - 1.0)
 	} else if x < 0.75 {
-		return lerpColor(red, orange, x*4.0-2.0)
+		return lerpColor(red, orange, x*4.0 - 2.0)
 	}
-	return lerpColor(orange, yellow, x*4.0-3.0)
+	return lerpColor(orange, yellow, x*4.0 - 3.0)
 }
 
 func main() {
