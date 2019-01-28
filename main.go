@@ -16,9 +16,7 @@ func max(a, b float64) float64 {
 }
 
 func signedDistance(p r3.Vector) float64 {
-    //return r3.Vector.Norm(p) - sphereRadius
-    s := r3.Vector{p.X/sphereRadius, p.Y/sphereRadius, p.Z/sphereRadius}
-    displacement := math.Sin(16.*s.X)*math.Sin(16.*s.Y)*math.Sin(16.*s.Z)*noiseAmplitude
+    displacement := math.Sin(16.*p.X)*math.Sin(16.*p.Y)*math.Sin(16.*p.Z)*noiseAmplitude
     return r3.Vector.Norm(p) - (sphereRadius+displacement)
 }
 
