@@ -16,7 +16,10 @@ func max(a, b float64) float64 {
 }
 
 func signedDistance(p r3.Vector) float64 {
-    return r3.Vector.Norm(p) - sphereRadius
+    //return r3.Vector.Norm(p) - sphereRadius
+    s := r3.Vector{p.X/sphereRadius, p.Y/sphereRadius, p.Z/sphereRadius}
+    displacement := math.Sin(16.*s.X)*math.Sin(16.*s.Y)*math.Sin(16.*s.Z)*noiseAmplitude
+    return r3.Vector.Norm(p) - (sphereRadius+displacement)
 }
 
 func sphereTrace(orig, dir r3.Vector, pos *r3.Vector) bool {
@@ -48,6 +51,7 @@ func multiplyColorIntensity(c color.RGBA, f float64) color.RGBA {
 }
 
 const sphereRadius = 1.5
+const noiseAmplitude = 0.2
 
 func main() {
     const width = 640.
@@ -75,8 +79,7 @@ func main() {
                 lightSrc := r3.Vector{10, 10, 10}
                 lightDir := r3.Vector.Normalize(r3.Vector.Sub(lightSrc, hit))
                 lightIntensity := max(0.4, r3.Vector.Dot(lightDir,distanceFieldNormal(hit)))
-                displacement := (math.Sin(16.*hit.X)*math.Sin(16.*hit.Y)*math.Sin(16.*hit.Z) + 1.) / 2.
-                img.Set(int(i), int(j), multiplyColorIntensity(whiteColor, lightIntensity*displacement))
+                img.Set(int(i), int(j), multiplyColorIntensity(whiteColor, lightIntensity))
             } else {
                 img.Set(int(i), int(j), backgroundColor)
             }
