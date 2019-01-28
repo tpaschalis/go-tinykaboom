@@ -73,9 +73,9 @@ func lerp(v0, v1, t float64) float64 {
 }
 
 func lerpColor(v0, v1 color.RGBA, t float64) color.RGBA {
-    p1 := float64(v0.R)/255. + float64(v1.R-v0.R)/255.*(max(0., min(1., t)))
-    p2 := float64(v0.G)/255. + float64(v1.G-v0.G)/255.*(max(0., min(1., t)))
-    p3 := float64(v0.B)/255. + float64(v1.B-v0.B)/255.*(max(0., min(1., t)))
+    p1 := float64(v0.R)/255. + (float64(v1.R)/255.-float64(v0.R)/255.)*(max(0., min(1., t)))
+    p2 := float64(v0.G)/255. + (float64(v1.G)/255.-float64(v0.G)/255.)*(max(0., min(1., t)))
+    p3 := float64(v0.B)/255. + (float64(v1.B)/255.-float64(v0.B)/255.)*(max(0., min(1., t)))
 	return color.RGBA{uint8(p1*255.), uint8(p2*255.), uint8(p3*255.), 255}
 }
 
@@ -127,8 +127,8 @@ func paletteFire(d float64) color.RGBA {
 	yellow := color.RGBA{uint8(255), uint8(250), uint8(0), uint8(255)} // "note that the color is "hot", i.e. has components >255"
 	orange := color.RGBA{uint8(255), uint8(150), uint8(0), uint8(255)}
 	red := color.RGBA{uint8(255), uint8(0), uint8(0), uint8(255)}
-	darkGray := color.RGBA{uint8(0), uint8(0), uint8(0), uint8(255)}
-	gray := color.RGBA{uint8(0), uint8(0), uint8(0), uint8(230)}
+	darkGray := color.RGBA{uint8(20), uint8(20), uint8(20), uint8(255)}
+	gray := color.RGBA{uint8(100), uint8(100), uint8(100), uint8(255)}
 
 	x := max(0., min(1., d))
 	if x < 0.25 {
