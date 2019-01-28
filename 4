@@ -23,16 +23,11 @@ func min(a, b float64) float64 {
 }
 
 func signedDistance(p r3.Vector) float64 {
-    //displacement := math.Sin(16.*p.X)*math.Sin(16.*p.Y)*math.Sin(16.*p.Z)*noiseAmplitude
-    displacement := -fractalBrownianMotion(r3.Vector.Mul(p, 3.4)) * noiseAmplitude
+    displacement := math.Sin(16.*p.X)*math.Sin(16.*p.Y)*math.Sin(16.*p.Z)*noiseAmplitude
     return r3.Vector.Norm(p) - (sphereRadius+displacement)
 }
 
 func sphereTrace(orig, dir r3.Vector, pos *r3.Vector) bool {
-    if r3.Vector.Dot(orig, orig) - math.Pow(r3.Vector.Dot(orig, dir), 2) > math.Pow(sphereRadius, 2) {
-        return false
-    }
-
     *pos = orig
     for i:=0; i<128; i++ {
         d := signedDistance(*pos)
@@ -92,28 +87,6 @@ func noise(x r3.Vector) float64 {
                 lerp(
                     lerp(hash(n+113.), hash(n+114.), f.X),
                     lerp(hash(n+170.), hash(n+171.), f.X), f.Y), f.Z)
-}
-
-func rotate(v r3.Vector) r3.Vector {
-    p1 := r3.Vector.Dot(r3.Vector{0.00, 0.80, 0.60}, v)
-    p2 := r3.Vector.Dot(r3.Vector{-0.80, 0.36, -0.48}, v)
-    p3 := r3.Vector.Dot(r3.Vector{-0.60, -0.48, 0.64}, v)
-    return r3.Vector{p1, p2, p3}
-}
-
-func fractalBrownianMotion(x r3.Vector) float64 {
-    p := rotate(x)
-    f := 0.
-    f += 0.5000*noise(p);
-    p = r3.Vector.Mul(p, 2.32);
-
-    f += 0.2500*noise(p);
-    p = r3.Vector.Mul(p, 3.03);
-
-    f += 0.1250*noise(p);
-    p = r3.Vector.Mul(p, 2.61);
-    f += 0.0625*noise(p);
-    return f/0.9375;
 }
 
 func main() {
