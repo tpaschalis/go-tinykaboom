@@ -75,7 +75,8 @@ func main() {
                 lightSrc := r3.Vector{10, 10, 10}
                 lightDir := r3.Vector.Normalize(r3.Vector.Sub(lightSrc, hit))
                 lightIntensity := max(0.4, r3.Vector.Dot(lightDir,distanceFieldNormal(hit)))
-                img.Set(int(i), int(j), multiplyColorIntensity(whiteColor, lightIntensity))
+                displacement := (math.Sin(16.*hit.X)*math.Sin(16.*hit.Y)*math.Sin(16.*hit.Z) + 1.) / 2.
+                img.Set(int(i), int(j), multiplyColorIntensity(whiteColor, lightIntensity*displacement))
             } else {
                 img.Set(int(i), int(j), backgroundColor)
             }
